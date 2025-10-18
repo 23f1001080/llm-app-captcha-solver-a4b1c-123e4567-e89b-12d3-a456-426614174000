@@ -1,0 +1,18 @@
+.captcha-container {
+    width: 200px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin: auto;
+}
+
+.captcha-container canvas {
+    display: block;
+    border-radius: 5px;
+}
+
+#captcha-result {
+    min-height: 2em; /* Ensure space for messages */
+}
