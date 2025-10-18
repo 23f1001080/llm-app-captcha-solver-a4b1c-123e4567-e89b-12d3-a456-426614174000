@@ -73,8 +73,9 @@ function refreshCaptcha() {
     const captchaText = generateCaptchaText();
     drawCaptcha(captchaText);
     document.getElementById('captcha-input').value = '';
-    document.getElementById('captcha-result').innerHTML = '';
-    document.getElementById('captcha-result').className = 'text-center mt-3 fs-5'; // Reset classes
+    const resultDiv = document.getElementById('captcha-result');
+    resultDiv.innerHTML = '';
+    resultDiv.classList.remove('text-success', 'text-danger', 'text-warning'); // Clear all feedback classes
 }
 
 function verifyCaptcha() {
@@ -82,22 +83,20 @@ function verifyCaptcha() {
     const userInputTrimmed = userInput.trim();
     const resultDiv = document.getElementById('captcha-result');
 
+    // Clear previous feedback classes before setting new ones
+    resultDiv.classList.remove('text-success', 'text-danger', 'text-warning');
+
     if (userInputTrimmed.length === 0) {
-        resultDiv.innerHTML = '<span class="text-warning">Captcha cannot be empty. Please enter the characters.</span>';
-        resultDiv.classList.remove('text-success', 'text-danger');
+        resultDiv.innerHTML = 'Input cannot be empty.';
         resultDiv.classList.add('text-warning');
         return; // Stop further processing
     }
 
     if (userInputTrimmed.toLowerCase() === currentCaptchaText.toLowerCase()) {
-        resultDiv.innerHTML = '<span class="text-success">Correct!</span>';
-        resultDiv.classList.remove('text-danger', 'text-warning');
+        resultDiv.innerHTML = 'Correct';
         resultDiv.classList.add('text-success');
-        // Optionally refresh after correct answer
-        // setTimeout(refreshCaptcha, 1500);
     } else {
-        resultDiv.innerHTML = '<span class="text-danger">Incorrect, please try again.</span>';
-        resultDiv.classList.remove('text-success', 'text-warning');
+        resultDiv.innerHTML = 'Incorrect';
         resultDiv.classList.add('text-danger');
         refreshCaptcha(); // Generate new captcha on incorrect attempt
     }
