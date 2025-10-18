@@ -79,17 +79,25 @@ function refreshCaptcha() {
 
 function verifyCaptcha() {
     const userInput = document.getElementById('captcha-input').value;
+    const userInputTrimmed = userInput.trim();
     const resultDiv = document.getElementById('captcha-result');
 
-    if (userInput.toLowerCase() === currentCaptchaText.toLowerCase()) {
+    if (userInputTrimmed.length === 0) {
+        resultDiv.innerHTML = '<span class="text-warning">Captcha cannot be empty. Please enter the characters.</span>';
+        resultDiv.classList.remove('text-success', 'text-danger');
+        resultDiv.classList.add('text-warning');
+        return; // Stop further processing
+    }
+
+    if (userInputTrimmed.toLowerCase() === currentCaptchaText.toLowerCase()) {
         resultDiv.innerHTML = '<span class="text-success">Correct!</span>';
-        resultDiv.classList.remove('text-danger');
+        resultDiv.classList.remove('text-danger', 'text-warning');
         resultDiv.classList.add('text-success');
         // Optionally refresh after correct answer
         // setTimeout(refreshCaptcha, 1500);
     } else {
         resultDiv.innerHTML = '<span class="text-danger">Incorrect, please try again.</span>';
-        resultDiv.classList.remove('text-success');
+        resultDiv.classList.remove('text-success', 'text-warning');
         resultDiv.classList.add('text-danger');
         refreshCaptcha(); // Generate new captcha on incorrect attempt
     }
@@ -100,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     refreshCaptcha();
 
     document.getElementById('refresh-captcha').addEventListener('click', refreshCaptcha);
-    document.getElementById('verify-captcha').addEventListener('click', verifyCaptcha);
+    document.getElementById('captcha-submit').addEventListener('click', verifyCaptcha);
 
     // Allow pressing Enter key to verify
     document.getElementById('captcha-input').addEventListener('keypress', (e) => {
