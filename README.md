@@ -1,8 +1,8 @@
-# Interactive Captcha Solver Web Application
+# Captcha Solver Interface
 
 ## 1. Project Title and Description
 
-This project provides a responsive and user-friendly interactive captcha solver interface. It dynamically generates a CAPTCHA (Completely Automated Public Turing test to tell Computers and Humans Apart) image using an HTML `<canvas>` element (as no static image was provided). Users are prompted to enter the characters they see into an input field. Upon submission, the application immediately validates the input against the correct captcha value, providing clear and visually distinct feedback. The interface is styled with Bootstrap 5 from jsdelivr, ensuring a modern look and feel, and includes real-time error handling for empty or incorrect submissions.
+This project provides a straightforward and functional web interface for solving CAPTCHAs. As no specific captcha image was provided, the application dynamically generates a unique alphanumeric CAPTCHA using an HTML `<canvas>` element for each challenge. Users are prompted to enter the characters they see into a dedicated text input field. Upon submission, the input is immediately validated against the correct captcha value. Clear and concise feedback, stating either 'Correct' or 'Incorrect', is displayed. The interface is designed to be simple, responsive, and user-friendly, utilizing Bootstrap 5 for clean styling and visual clarity.
 
 ## 2. Setup Instructions
 
@@ -15,13 +15,13 @@ The application is entirely client-side, so no additional server setup or depend
 
 ## 3. Usage Guide
 
-1.  **View Captcha:** When you open `index.html`, a randomly generated captcha image will be prominently displayed.
+1.  **View Captcha:** When you open `index.html`, a dynamically generated captcha image will be prominently displayed.
 2.  **Enter Text:** Type the characters you see in the captcha image into the input field labeled "Enter Captcha". The validation is case-insensitive for user convenience.
 3.  **Submit:** Click the "Submit" button (or press `Enter` in the input field) to verify your input.
 4.  **Feedback:** Immediate feedback will appear in the designated result section below the input:
-    *   **Empty Input:** If you attempt to submit an empty input, a warning message will be displayed, and the captcha will not refresh.
-    *   **Correct Input:** A "Correct!" message will appear in green.
-    *   **Incorrect Input:** An "Incorrect, please try again." message will appear in red, and a new captcha will automatically be generated for you to attempt again.
+    *   **Empty Input:** If you attempt to submit an empty input, the message "Input cannot be empty." will be displayed in yellow.
+    *   **Correct Input:** The word "Correct" will appear in green.
+    *   **Incorrect Input:** The word "Incorrect" will appear in red, and a new captcha will automatically be generated for you to attempt again.
 5.  **Refresh Captcha:** If the current captcha is difficult to read or you wish to try a new one, click the "Refresh Captcha" button.
 
 ## 4. Code Explanation
@@ -42,12 +42,13 @@ The application is structured into four main files:
     *   `currentCaptchaText`: Stores the current captcha string for validation.
     *   `generateCaptchaText(length)`: Creates a random alphanumeric string.
     *   `drawCaptcha(text)`: Renders the given text onto an HTML `<canvas>`, applying random distortions (lines, dots, rotation, font variations) to simulate a real captcha. It dynamically creates the canvas if it doesn't exist within `#captcha-image`.
-    *   `refreshCaptcha()`: Generates and draws a new captcha, then clears the input field and any previous result messages.
+    *   `refreshCaptcha()`: Generates and draws a new captcha, then clears the input field and any previous result messages and styling from the result div.
     *   `verifyCaptcha()`:
         *   Retrieves and trims the user's input from `#captcha-input`.
-        *   **Empty Input Handling**: Checks if the input is empty. If so, it displays a `text-warning` message in `#captcha-result` and immediately returns without refreshing the captcha.
+        *   Resets previous feedback styling on `#captcha-result`.
+        *   **Empty Input Handling**: Checks if the input is empty. If so, it displays "Input cannot be empty." in `text-warning` style and returns.
         *   **Validation**: Compares the user's (case-insensitive) input with `currentCaptchaText`.
-        *   **Feedback**: Updates `#captcha-result` with a success (`text-success`) or failure (`text-danger`) message.
+        *   **Feedback**: Updates `#captcha-result` with "Correct" (in `text-success` style) or "Incorrect" (in `text-danger` style). This ensures only these specific words are displayed as feedback for verification.
         *   **New Captcha on Incorrect**: If the input is incorrect, `refreshCaptcha()` is called to present a new challenge.
         *   Clears the input field after each verification attempt.
     *   **Event Listeners**: Attaches listeners for:
